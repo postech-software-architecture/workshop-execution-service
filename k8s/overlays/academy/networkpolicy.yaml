@@ -1,0 +1,68 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: execucao-service
+spec:
+  podSelector:
+    matchLabels:
+      app: execucao-service
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: ingress-nginx
+    - podSelector:
+        matchLabels:
+          app: billing-service
+    - podSelector:
+        matchLabels:
+          app: execucao-service
+    - ipBlock:
+        cidr: 10.0.0.0/8
+    - podSelector:
+        matchLabels:
+          app: fase4-edge
+    ports:
+    - protocol: TCP
+      port: 8080
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system
+    ports:
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 53
+  - to:
+    - podSelector:
+        matchLabels:
+          app: mongo
+    ports:
+    - protocol: TCP
+      port: 27017
+  - to:
+    - podSelector:
+        matchLabels:
+          app: rabbit
+    ports:
+    - protocol: TCP
+      port: 5672
+  - to:
+    - podSelector:
+        matchLabels:
+          app: otel
+    ports:
+    - protocol: TCP
+      port: 4318
+  - to:
+    - podSelector:
+        matchLabels:
+          app: os-service
+    ports:
+    - protocol: TCP
+      port: 8080
