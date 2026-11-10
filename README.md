@@ -10,7 +10,7 @@ mvn -B -Pquality clean verify
 
 Contratos: [HTTP](contracts/openapi.json) e [mensagens](contracts/mensagens.schema.json). Infraestrutura da aplicação em `k8s/`; pipeline independente em `.github/workflows`. Variáveis em `src/main/resources/application.properties`; nomes de secrets em `k8s/secret.env.example`. Não versionar os valores reais.
 
-Testes de contexto usam mocks e não substituem transações/concorrência Mongo reais. Docker e cloud não foram iniciados/aplicados. Conta Mercado Pago, SMTP, deploy, publicação, proteção e provas integradas continuam pendentes. O pipeline remoto só será comprovado após publicação e execução.
+Testes de contexto usam mocks e não substituem transações/concorrência Mongo reais. Integração local verificada em 10/11/2026: Compose (PostgreSQL, MongoDB, RabbitMQ, OTel) e os overlays Academy aplicados num k3s local, com BDD completo da plataforma até ENTREGUE e compensações (estorno, recusa, expiração e cancelamento) concluídas em COMPENSADA. O Mercado Pago foi substituído pelo mock da Orders API em workshop-infra-platform/integracao; conta de teste real, SMTP e deploy no Academy continuam pendentes. A main é protegida por ruleset (PR, check verify obrigatório, sem force push/deleção).
 
 A distribuição completa contém a documentação de arquitetura/Saga, roteiros de aceite e inventário de hashes em `outputs/entrega-fase-4`.
 
